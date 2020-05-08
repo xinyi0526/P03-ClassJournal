@@ -1,5 +1,6 @@
 package com.myapplicationdev.android.p03_classjournal;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,7 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
-    int requestCode =1;
+    int requestCode1 =1;
     ListView lv;
     ArrayAdapter aa;
     ArrayList<DailyCA> dailyCA;
@@ -50,7 +51,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(DetailsActivity.this, AddWeek.class);
                 i.putExtra("week",dailyCA.size() +1);
-                startActivityForResult(i,requestCode);
+                startActivityForResult(i,requestCode1);
             }
         });
 
@@ -79,5 +80,18 @@ public class DetailsActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == requestCode1){
+                DailyCA newDG = (DailyCA) data.getSerializableExtra("newca");
+                dailyCA.add(newDG);
+                aa.notifyDataSetChanged();
+
+            }
+        }
     }
 }
