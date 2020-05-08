@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> moduleList;
     ListView lv;
     ArrayAdapter<String> aa;
-    ArrayList<DailyCA> dailyCA;
+    ArrayList<DailyCA> dailyCA = new ArrayList<DailyCA>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         moduleList.add("C347");
 
 
-        aa = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,moduleList);
+
+
+        aa = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,moduleList);
         lv.setAdapter(aa);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -18,24 +18,28 @@ public class DetailsActivity extends AppCompatActivity {
     ArrayAdapter aa;
     ArrayList<DailyCA> dailyCA;
     Button btnInfo,btnAdd,btnEmail;
-
+    String moduleCode;
+    String emailBody;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        lv = (ListView) findViewById(R.id.lvModuleCode);
+        lv = (ListView) findViewById(R.id.lvDailyGrades);
         dailyCA = new ArrayList<DailyCA>();
-        dailyCA.add(new DailyCA("A",1));
-        dailyCA.add(new DailyCA("B",2));
-        dailyCA.add(new DailyCA("C",3));
+        dailyCA.add(new DailyCA("B",1));
+        dailyCA.add(new DailyCA("C",2));
+        dailyCA.add(new DailyCA("A",3));
         btnInfo = (Button) this.findViewById(R.id.buttonInfo);
         btnAdd = (Button) this.findViewById(R.id.buttonAdd);
         btnEmail = (Button) this.findViewById(R.id.buttonEmail);
 
         Intent i = getIntent();
-        DailyCA module = (DailyCA) i.getSerializableExtra("classdetails");
-        final String femail = i.getStringExtra("email");
+        String faciEmail = i.getStringExtra("email");
+        moduleCode = i.getStringExtra("moduleCode");
+        setTitle("Info for " + moduleCode);
+
+        final String one = faciEmail.toString();
 
 
         aa = new DailyCAAdapter(this,R.layout.row,dailyCA);
@@ -61,10 +65,14 @@ public class DetailsActivity extends AppCompatActivity {
         btnEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int count = dailyCA.size();
+                for(int x = 0; x<count;x++){
+                    DailyCA cd = dailyCA.get(x);
+                    emailBody += "Week " + cd.getWeek() + " DG " + cd.getDgGrade() +"\n";
+                }
                 Intent email = new Intent(Intent.ACTION_SEND);
-                email.putExtra(Intent.EXTRA_EMAIL,new String[]{femail});
-                email.putExtra(Intent.EXTRA_TEXT,"Hi faci, I am ... Please see my remarks so far,thank you!");
-                email.putExtra("dailyCA",DetailsActivity.this.getClass());
+                email.putExtra(Intent.EXTRA_EMAIL,new String[]{one});
+                email.putExtra(Intent.EXTRA_TEXT,"Hi faci, \nI am ...\n Please see my remarks so far, Thank you!\n"  + emailBody);
                 email.setType("message/rfc822");
                 startActivity(Intent.createChooser(email,"Choose an Email client:"));
             }
